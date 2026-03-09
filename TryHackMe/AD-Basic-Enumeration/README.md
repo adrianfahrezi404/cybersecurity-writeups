@@ -17,8 +17,6 @@ nmap -p 88,135,139,389,445 -sV -sC <IP_TARGET>
 ```
 ![Hasil pemindaian Nmap](images/Hasil-pemindaian-Nmap.png)
 
-*Keterangan: Hasil pemindaian Nmap menemukan layanan khas Active Directory dan mengidentifikasi OS target.*
-
 Dari hasil scanning, Nmap memberikan informasi yang sangat berharga. Saya menemukan port yang terbuka, dan Nmap scripting engine berhasil membocorkan nama domain target, yaitu `tryhackme.loc`, beserta sistem operasinya: **Windows Server 2019 Datacenter**. Mesin ini dipastikan adalah *Domain Controller* (DC). Langkah awal yang sangat mulus!
 
 ## 2. Eksplorasi SMB: Menjadi "Tamu Tak Diundang" dan Terkena Jebakan
@@ -36,18 +34,14 @@ Saya masuk ke sana, menemukan file `Mouse_and_Malware.txt`, dan membacanya denga
 
 ![Mengakses folder AnonShare](images/Mengakses-Jebakan.png)
 
-*Keterangan: Mengakses folder AnonShare dan malah menemukan cerita pendek sebagai pengecoh (rabbit hole).*
-
 Pantang menyerah, saya pindah ke folder `UserBackups` dan bingo! Di sana ada file `flag.txt` yang langsung saya unduh.
 
 ```Bash
-smbclient //<IP_TARGET>/UserBackups -N
+smbclient //10.211.11.10/UserBackups -N
 smb: \> get flag.txt
 ```
 
-![Hasil pemindaian Nmapn](images/Hasil-pemindaian-Nmap.png)
-
-*Keterangan: Berhasil mengekstrak flag dari folder UserBackups menggunakan smbclient.*
+![Mengekstrak flag](images/mengekstrak-flag.png)
 
 ## 3. Menginterogasi Sistem: Ekstraksi Data User dan Grup
 
@@ -65,7 +59,9 @@ rpcclient $> enumdomusers
 rpcclient $> queryuser rduke
 ```
 
-*Keterangan: Melakukan enumerasi user dan grup secara spesifik menggunakan rpcclient.*
+![Enumerasi user](images/enumerasi-user(rduke).png)
+
+![Enumerasi group](images/enumerasi-group.png)
 
 ## 4. Puncak Keseruan: Password Spraying!
 
@@ -73,7 +69,7 @@ Ini dia fase yang paling menegangkan! Berbekal daftar *user* yang saya dapatkan,
 
 Sempat terjadi drama di mana seluruh hasil terminal saya berwarna merah (`STATUS_LOGON_FAILURE`) karena kesalahan format di dalam file `users.txt` dan `passwords.txt`. Tapi, error adalah guru terbaik!
 
-*Keterangan: Uji coba Password Spraying yang gagal total karena kesalahan format file input*.
+![Uji Coba Password](images/Uji-coba-Password.png)
 
 Setelah merapikan file tersebut, saya mengeksekusinya kembali:
 
@@ -83,7 +79,7 @@ crackmapexec smb 10.211.11.10 -u users.txt -p passwords.txt
 
 Tiba-tiba muncullah baris ajaib: tulisan berwarna hijau `[+] tryhackme.loc\rduke:Password1!`. *Gotcha!* Saya mendapatkan kredensial yang valid!
 
-Keterangan: Berhasil! CrackMapExec menemukan kombinasi kredensial yang valid.
+![Mendapatkan kredensial yang valid!](images/Berhasil.png)
 
 ## Kesimpulan
 
