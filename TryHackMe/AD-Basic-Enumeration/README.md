@@ -15,6 +15,7 @@ Setelah terhubung ke jaringan VPN TryHackMe, langkah pertama yang wajib dilakuka
 ```bash
 nmap -p 88,135,139,389,445 -sV -sC <IP_TARGET>
 ```
+![Hasil pemindaian Nmap](images/Hasil-pemindaian-Nmap.png)
 
 *Keterangan: Hasil pemindaian Nmap menemukan layanan khas Active Directory dan mengidentifikasi OS target.*
 
@@ -27,10 +28,13 @@ Fase selanjutnya adalah mencoba peruntungan di layanan SMB (*Server Message Bloc
 ```Bash
 smbclient -L //10.211.11.10 -N
 ```
+![Daftar shared folder](images/Mengakses-AnonShare.png)
 
 Mengejutkannya, *server* ini mengizinkan saya melihat daftar shared folder! Di antara folder bawaan Windows yang sensitif, ada folder buatan admin yang mencurigakan, salah satunya `AnonShare`.
 
 Saya masuk ke sana, menemukan file `Mouse_and_Malware.txt`, dan membacanya dengan antusias. Hasilnya? **Zonk!** Ternyata itu cuma *rabbit hole* (jebakan) berisi cerita pendek tentang tikus dan USB nakal.
+
+![Mengakses folder AnonShare](images/Mengakses-Jebakan.png)
 
 *Keterangan: Mengakses folder AnonShare dan malah menemukan cerita pendek sebagai pengecoh (rabbit hole).*
 
@@ -40,6 +44,8 @@ Pantang menyerah, saya pindah ke folder `UserBackups` dan bingo! Di sana ada fil
 smbclient //<IP_TARGET>/UserBackups -N
 smb: \> get flag.txt
 ```
+
+![Hasil pemindaian Nmapn](images/Hasil-pemindaian-Nmap.png)
 
 *Keterangan: Berhasil mengekstrak flag dari folder UserBackups menggunakan smbclient.*
 
