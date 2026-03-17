@@ -9,18 +9,16 @@ Pada lab Attacktive Directory ini, fokus utama adalah melakukan eksploitasi pada
 ---
 
 ## Task 1 & 2: Setup dan Enumerasi Awal
-Target IP: `[MASUKKAN IP TARGET DI SINI]`
+Target IP: `[IP TARGET]`
 Domain Target: `spookysec.local`
 
 Langkah pertama yang dilakukan adalah menambahkan IP target ke dalam file `/etc/hosts`. Selanjutnya, dilakukan pemindaian port menggunakan Nmap untuk mengidentifikasi layanan yang berjalan.
 
 **Perintah Nmap:**
-`[MASUKKAN COMMAND NMAP DI SINI NANTI]`
+`[COMMAND NMAP]`
 
 **Hasil Nmap:**
-`[MASUKKAN SCREENSHOT / HASIL NMAP DI SINI NANTI]`
-
-*Catatan: Port penting yang terbuka antara lain port 88 (Kerberos), 139/445 (SMB), dan 389 (LDAP).*
+`[HASIL NMAP]`
 
 ---
 
@@ -28,10 +26,10 @@ Langkah pertama yang dilakukan adalah menambahkan IP target ke dalam file `/etc/
 Karena tidak memiliki kredensial, enumerasi user dilakukan menggunakan **Kerbrute** dan *wordlist* yang telah disediakan untuk mencari *username* yang valid di *domain controller*.
 
 **Perintah Kerbrute:**
-`[MASUKKAN COMMAND KERBRUTE DI SINI NANTI]`
+`[COMMAND KERBRUTE]`
 
 **Hasil Enumerasi:**
-`[MASUKKAN SCREENSHOT USER YANG VALID DI SINI NANTI]`
+`[USER VALID]`
 
 ---
 
@@ -39,11 +37,11 @@ Karena tidak memiliki kredensial, enumerasi user dilakukan menggunakan **Kerbrut
 Setelah mendapatkan user yang valid, tahap selanjutnya adalah mencari akun yang memiliki miskonfigurasi *"Do not require Kerberos preauthentication"*. Pengecekan dan pengambilan *hash* dilakukan menggunakan `GetNPUsers.py` dari **Impacket**.
 
 **Perintah GetNPUsers:**
-`[MASUKKAN COMMAND IMPACKET DI SINI NANTI]`
+`[COMMAND IMPACKET]`
 
 **Hasil Hash & Cracking:**
 Hash yang didapat kemudian di-crack secara offline menggunakan Hashcat / John The Ripper.
-`[MASUKKAN COMMAND & SCREENSHOT HASIL CRACK PASSWORD DI SINI NANTI]`
+`[COMMAND & SCREENSHOT CRACK PASSWORD]`
 
 ---
 
@@ -51,10 +49,10 @@ Hash yang didapat kemudian di-crack secara offline menggunakan Hashcat / John Th
 Dengan kredensial yang berhasil di-crack, akses ke SMB *shares* dapat dilakukan menggunakan `smbclient` untuk mencari informasi sensitif lebih lanjut.
 
 **Perintah smbclient:**
-`[MASUKKAN COMMAND SMBCLIENT DI SINI NANTI]`
+`[COMMAND SMBCLIENT]`
 
 **Temuan di SMB:**
-`[MASUKKAN SCREENSHOT ISI FOLDER / BACKUP FILE DI SINI NANTI]`
+`[SCREENSHOT ISI FOLDER / BACKUP FILE]`
 
 ---
 
@@ -62,10 +60,10 @@ Dengan kredensial yang berhasil di-crack, akses ke SMB *shares* dapat dilakukan 
 Memanfaatkan kredensial akun *backup* yang ditemukan, serangan DCSync dilakukan menggunakan `secretsdump.py` dari Impacket untuk menarik seluruh *hash password* dari *domain controller*.
 
 **Perintah secretsdump:**
-`[MASUKKAN COMMAND SECRETSDUMP DI SINI NANTI]`
+`[COMMAND SECRETSDUMP]`
 
 **Hasil Dump:**
-`[MASUKKAN SCREENSHOT HASH ADMINISTRATOR DI SINI NANTI]`
+`[SCREENSHOT HASH ADMINISTRATOR]`
 
 ---
 
@@ -73,10 +71,10 @@ Memanfaatkan kredensial akun *backup* yang ditemukan, serangan DCSync dilakukan 
 Tahap terakhir adalah melakukan *Pass-the-Hash* menggunakan *hash* Administrator yang didapat dari langkah sebelumnya. Akses langsung ke server dilakukan menggunakan `evil-winrm`.
 
 **Perintah evil-winrm:**
-`[MASUKKAN COMMAND EVIL-WINRM DI SINI NANTI]`
+`[COMMAND EVIL-WINRM]`
 
 **Root Flag:**
-`[MASUKKAN SCREENSHOT ROOT.TXT / FLAG DI SINI NANTI]`
+`[SCREENSHOT ROOT.TXT / FLAG]`
 
 ---
 ## Kesimpulan
